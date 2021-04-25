@@ -7,18 +7,19 @@
         placeholder="请输入要查询的用户ID"
         style="width: 20rem"
       />
-      <el-button type="primary" @click="handleFilter"> 查询 </el-button>
+      <el-button type="primary"> 查询 </el-button>
     </div>
     <span class="tableTitle">用户管理/用户列表</span>
     <div class="tableArea">
       <el-table
-        v-loading="tableDataLoading"
-        :data="tableData"
+        :data="
+          tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+        "
         border
         fit
         highlight-current-row
         style="width: 100%"
-        @sort-change="sortChange"
+        cur
       >
         <el-table-column type="index" width="50"> </el-table-column>
         <el-table-column property="nickName" label="昵称"> </el-table-column>
@@ -62,6 +63,15 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[3, 5, 8, 10]"
+        :page-size="pageSize"
+        :total="tableData.length"
+      >
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -71,6 +81,8 @@ export default {
   data() {
     return {
       userID: "",
+      currentPage: 1,
+      pageSize: 3,
       tableData: [
         {
           nickName: "张三",
@@ -93,8 +105,39 @@ export default {
           blockTime: "2020-03-25 09:44",
           isBan: true,
         },
+        {
+          nickName: "李四",
+          userID: "7777777777",
+          userProfile: require("@/assets/kk.jpg"),
+          blockTime: "2020-03-25 09:44",
+          isBan: true,
+        },
+        {
+          nickName: "张李四三",
+          userID: "7777777777",
+          userProfile: require("@/assets/kk.jpg"),
+          blockTime: "2020-03-25 09:44",
+          isBan: true,
+        },
+        {
+          nickName: "李四",
+          userID: "7777777777",
+          userProfile: require("@/assets/kk.jpg"),
+          blockTime: "2020-03-25 09:44",
+          isBan: true,
+        },
       ],
     };
+  },
+  methods: {
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.pageSize = val;
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.currentPage = val;
+    },
   },
 };
 </script>

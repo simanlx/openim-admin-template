@@ -75,7 +75,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/operation-management/user-management',
     name: 'operation-management',
-    meta: { title: '运营管理', icon: 'el-icon-s-data' },
+    meta: { title: '运营管理', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'user-management',
