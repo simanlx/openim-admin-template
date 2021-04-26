@@ -24,8 +24,6 @@
         <el-table-column type="index" width="50"> </el-table-column>
         <el-table-column property="nickName" label="昵称"> </el-table-column>
         <el-table-column property="userID" label="用户ID"> </el-table-column>
-        <!-- <el-table-column property="userProfile" label="用户头像">
-        </el-table-column> -->
         <el-table-column align="center" property="userProfile" label="用户头像">
           <template slot-scope="scope">
             <el-popover placement="right" title="" trigger="hover">
@@ -77,6 +75,7 @@
 </template>
 
 <script>
+import { disable_user } from "../api/manageApi";
 export default {
   data() {
     return {
@@ -137,6 +136,16 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
+    },
+    handleClick(e) {
+      console.log(e);
+      let parameter = {};
+      parameter.optionID = "999";
+      parameter.uid = "999";
+      parameter.disable_second = "999";
+      disable_user(parameter).then((res) => {
+        console.log(res);
+      });
     },
   },
 };

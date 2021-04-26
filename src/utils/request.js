@@ -20,12 +20,12 @@ service.interceptors.request.use(
       //配置请求头
     }
 
-    if (localStorage.getItem("token")) {
-      console.log(localStorage.getItem("token"), "请求里的token")
+    if (sessionStorage.getItem("token")) {
+      console.log(sessionStorage.getItem("token"), "请求里的token")
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['token'] = localStorage.getItem("token")
+      config.headers['token'] = sessionStorage.getItem("token")
     }
     return config
   },

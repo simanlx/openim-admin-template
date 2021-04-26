@@ -16,3 +16,11 @@ export function query_new_user(data) {
         data: JSON.stringify(data)
     })
 }
+//封禁或解封
+export function disable_user(data) {
+    return request({
+        url: '/disable_user',
+        method: 'post',
+        data: JSON.stringify(data)
+    })
+}

@@ -40,7 +40,7 @@
 
 <script>
 import { validUsername } from "@/utils/validate";
-
+import { get_token } from "@/api/manageApi.js";
 export default {
   name: "Login",
   data() {
@@ -54,7 +54,7 @@ export default {
 
     return {
       loginForm: {
-        secret: "edaf71f30083c296f34bf4f09b562436bb2e4fa8",
+        secret: "123456",
         optionID: "111",
       },
       loginRules: {
@@ -77,9 +77,9 @@ export default {
     },
     handleLogin() {
       this.loading = true;
-
+      console.log(typeof this.loginForm.secret);
       this.$store
-        .dispatch("getToken", this.loginForm.secret)
+        .dispatch("getMyToken", this.loginForm)
         .then(() => {
           this.$router.push({ path: this.redirect || "/" });
           this.loading = false;
@@ -87,6 +87,7 @@ export default {
         .catch(() => {
           this.loading = false;
         });
+
       /* this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;

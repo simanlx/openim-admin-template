@@ -15,19 +15,19 @@ const store = new Vuex.Store({
   mutations: {
     setToken(state, data) {
       state.token = data.token
-      console.log(state.token, "token")
 
     }
 
 
   },
   actions: {
-    getToken(store, data) {
+    getMyToken(store, data) {
       //存token  存了两个地方
       get_token(data).then(res => {
         console.log(res, "获取token")
         store.commit("setToken", res.data)
-        localStorage.setItem("token", res.data.token);
+        sessionStorage.setItem("token", res.data.token);
+
       })
     },
 

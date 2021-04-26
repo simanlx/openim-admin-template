@@ -48,6 +48,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/data-statistics/user-statistics',
 
+
   },
 
   {
@@ -56,18 +57,23 @@ export const constantRoutes = [
     redirect: '/data-statistics/user-statistics',
     name: 'data-statistics',
     meta: { title: '数据统计', icon: 'el-icon-s-data' },
+
     children: [
       {
         path: 'user-statistics',
         name: 'user-statistics',
         component: () => import('@/views/user-statistics'),
-        meta: { title: '用户统计', icon: 'el-icon-user-solid' }
+        meta: { title: '用户统计', icon: 'el-icon-user-solid' },
+
+
       },
       {
         path: 'info-statistics',
         name: 'info-statistics',
         component: () => import('@/views/info-statistics'),
-        meta: { title: '消息统计', icon: 'el-icon-s-comment' }
+        meta: { title: '消息统计', icon: 'el-icon-s-comment' },
+
+
       }
     ]
   }, {
@@ -76,18 +82,23 @@ export const constantRoutes = [
     redirect: '/operation-management/user-management',
     name: 'operation-management',
     meta: { title: '运营管理', icon: 'el-icon-s-help' },
+
     children: [
       {
         path: 'user-management',
         name: 'user-management',
         component: () => import('@/views/user-management'),
-        meta: { title: '用户管理', icon: 'el-icon-user-solid' }
+        meta: { title: '用户管理', icon: 'el-icon-user-solid' },
+
+
       },
       {
         path: 'blocked-user-list',
         name: 'blocked-user-list',
         component: () => import('@/views/blocked-user-list'),
-        meta: { title: '封禁用户列表', icon: 'el-icon-s-comment' }
+        meta: { title: '封禁用户列表', icon: 'el-icon-s-comment' },
+
+
       }
     ]
   },
@@ -99,6 +110,7 @@ export const constantRoutes = [
     redirect: '/message-management/message-list',
     name: 'message-management',
     meta: { title: '消息管理', icon: 'el-icon-s-comment' },
+
     children: [
       {
         path: 'message-list',

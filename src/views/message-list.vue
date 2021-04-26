@@ -4,19 +4,19 @@
       <el-input
         v-model="listQuery.title"
         placeholder="请输入搜索内容"
-        style="width: 12%"
-        class="filter-item"
+        style="width: 13.2%"
+        class="filter-item search-input"
         @keyup.enter.native="handleFilter"
       /><el-input
         v-model="listQuery.sendID"
         placeholder="请输入发送者ID"
-        style="width: 200px"
+        style="width: 12.4%"
         class="filter-item sendID-input"
         @keyup.enter.native="handleFilter"
       /><el-input
         v-model="listQuery.receiveID"
         placeholder="请输入接收者ID"
-        style="width: 200px"
+        style="width: 12.4%"
         class="filter-item receiveID-input"
         @keyup.enter.native="handleFilter"
       />
@@ -54,6 +54,7 @@
         搜索
       </el-button>
     </div>
+
     <div class="tableArea">
       <el-table
         v-loading="tableDataLoading"
@@ -137,9 +138,11 @@ export default {
 #message-list {
   padding: 1.2rem;
   .filter-container {
+    margin-bottom: 1rem;
     .el-date-editor {
       margin-left: 2rem;
     }
+    .search-input,
     .sendID-input,
     .receiveID-input {
       margin-left: 2rem;

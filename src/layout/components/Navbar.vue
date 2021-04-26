@@ -57,6 +57,7 @@ export default {
       this.$store.dispatch("app/toggleSideBar");
     },
     async logout() {
+      await sessionStorage.removeItem("token");
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);
     },
   },
