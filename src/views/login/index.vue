@@ -75,37 +75,13 @@ export default {
         this.passwordType = "password";
       }
     },
-    handleLogin() {
+    async handleLogin() {
       this.loading = true;
-      console.log(typeof this.loginForm.secret);
-      this.$store
-        .dispatch("getMyToken", this.loginForm)
-        .then(() => {
-          this.$router.push({ path: this.redirect || "/" });
-          this.loading = false;
-        })
-        .catch(() => {
-          this.loading = false;
-        });
-
-      /* this.$refs.loginForm.validate((valid) => {
-        if (valid) {
-          this.loading = true;
-
-          this.$store
-            .dispatch("getToken", this.loginForm.secret)
-            .then(() => {
-              this.$router.push({ path: this.redirect || "/" });
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      }); */
+      await get_token(this.loginForm).then((res) => {
+        sessionStorage.setItem("token", res.data.token);
+      });
+      this.$router.push({ path: this.redirect || "/" });
+      this.loading = false;
     },
   },
 };

@@ -7,7 +7,7 @@
         placeholder="请输入要查询的用户ID"
         style="width: 20rem"
       />
-      <el-button type="primary"> 查询 </el-button>
+      <el-button type="primary" @click="searchUser"> 查询 </el-button>
     </div>
     <span class="tableTitle">用户管理/用户列表</span>
     <div class="tableArea">
@@ -22,41 +22,15 @@
         cur
       >
         <el-table-column type="index" width="50"> </el-table-column>
-        <el-table-column property="nickName" label="昵称"> </el-table-column>
-        <el-table-column property="userID" label="用户ID"> </el-table-column>
-        <el-table-column align="center" property="userProfile" label="用户头像">
-          <template slot-scope="scope">
-            <el-popover placement="right" title="" trigger="hover">
-              <img
-                :src="scope.row.userProfile"
-                style="height: 400px; width: 500px"
-              />
-              <img
-                slot="reference"
-                :src="scope.row.userProfile"
-                :alt="scope.row"
-                style="max-height: 50px; max-width: 130px"
-              />
-            </el-popover>
-          </template>
-        </el-table-column>
+        <el-table-column property="Name" label="昵称"> </el-table-column>
+        <el-table-column property="UID" label="用户ID"> </el-table-column>
+
         <el-table-column property="blockTime" label="封禁时间">
         </el-table-column>
         <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
-            <el-button
-              v-if="scope.row.isBan == true"
-              @click="handleClick(scope.row)"
-              type="text"
-              size="small"
+            <el-button @click="handleClick(scope.row)" type="text" size="small"
               >解封</el-button
-            >
-            <el-button
-              v-else
-              @click="handleClick(scope.row)"
-              type="text"
-              size="small"
-              >封禁</el-button
             >
           </template>
         </el-table-column>
@@ -75,60 +49,47 @@
 </template>
 
 <script>
-import { disable_user } from "../api/manageApi";
+import { disable_user, query_user, query_disable_user } from "../api/manageApi";
 export default {
   data() {
     return {
       userID: "",
       currentPage: 1,
       pageSize: 3,
-      tableData: [
-        {
-          nickName: "张三",
-          userID: "7777777777",
-          userProfile: require("@/assets/kk.jpg"),
-          blockTime: "2020-03-25 09:44",
-          isBan: true,
-        },
-        {
-          nickName: "张三",
-          userID: "7777777777",
-          userProfile: require("@/assets/kk.jpg"),
-          blockTime: "2020-03-25 09:44",
-          isBan: false,
-        },
-        {
-          nickName: "张三",
-          userID: "7777777777",
-          userProfile: require("@/assets/kk.jpg"),
-          blockTime: "2020-03-25 09:44",
-          isBan: true,
-        },
-        {
-          nickName: "李四",
-          userID: "7777777777",
-          userProfile: require("@/assets/kk.jpg"),
-          blockTime: "2020-03-25 09:44",
-          isBan: true,
-        },
-        {
-          nickName: "张李四三",
-          userID: "7777777777",
-          userProfile: require("@/assets/kk.jpg"),
-          blockTime: "2020-03-25 09:44",
-          isBan: true,
-        },
-        {
-          nickName: "李四",
-          userID: "7777777777",
-          userProfile: require("@/assets/kk.jpg"),
-          blockTime: "2020-03-25 09:44",
-          isBan: true,
-        },
-      ],
+      tableData: [],
     };
   },
   methods: {
+    getList() {
+      let parameter = {};
+      parameter.optionID = "9999";
+      query_disable_user(parameter).then((res) => {
+        res.data.users.forEach((item) => {
+          let medium = {};
+          medium.UID = item.UID;
+          medium.Name = item.Name;
+          medium.blockTime =
+            item.BeginDisableTime.slice(0, 10) +
+            " " +
+            item.BeginDisableTime.slice(11, 19) +
+            "——" +
+            item.EndDisableTime.slice(0, 10) +
+            " " +
+            item.EndDisableTime.slice(11, 19);
+
+          this.tableData.push(medium);
+        });
+      });
+    },
+    searchUser() {
+      let parameter = {};
+      parameter.optionID = "999";
+      parameter.userID = this.userID;
+      console.log(parameter, "查询请求");
+      query_user(parameter).then((res) => {
+        console.log(res, "查询反馈");
+      });
+    },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       this.pageSize = val;
@@ -141,12 +102,17 @@ export default {
       console.log(e);
       let parameter = {};
       parameter.optionID = "999";
-      parameter.uid = "999";
-      parameter.disable_second = "999";
+      parameter.uid = e.UID;
+      parameter.disable_second = 0;
+      parameter.ex = "";
+      console.log(parameter);
       disable_user(parameter).then((res) => {
         console.log(res);
       });
     },
+  },
+  created() {
+    this.getList();
   },
 };
 </script>

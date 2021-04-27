@@ -5,7 +5,7 @@
         v-model="listQuery.title"
         placeholder="请输入搜索内容"
         style="width: 13.2%"
-        class="filter-item search-input"
+        class="filter-item"
         @keyup.enter.native="handleFilter"
       /><el-input
         v-model="listQuery.sendID"
@@ -45,7 +45,6 @@
         <el-option value="文本" /><el-option value="图片" />
       </el-select>
       <el-button
-        v-waves
         class="filter-item"
         type="primary"
         icon="el-icon-search"
@@ -63,7 +62,6 @@
         fit
         highlight-current-row
         style="width: 100%"
-        @sort-change="sortChange"
       >
         <el-table-column type="index" width="50"> </el-table-column>
         <el-table-column property="sessionTypepe" label="会话类型">
@@ -88,6 +86,7 @@
 export default {
   data() {
     return {
+      tableDataLoading: false,
       listQuery: {
         importance: undefined,
         title: "",
@@ -131,6 +130,11 @@ export default {
       ],
     };
   },
+  methods: {
+    handleFilter() {
+      console.log("jjjj");
+    },
+  },
 };
 </script>
 
@@ -139,10 +143,11 @@ export default {
   padding: 1.2rem;
   .filter-container {
     margin-bottom: 1rem;
+    padding-left: 2rem;
     .el-date-editor {
       margin-left: 2rem;
     }
-    .search-input,
+
     .sendID-input,
     .receiveID-input {
       margin-left: 2rem;

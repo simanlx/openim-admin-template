@@ -16,6 +16,25 @@ export function query_new_user(data) {
         data: JSON.stringify(data)
     })
 }
+
+//拉取封禁用户列表
+export function query_disable_user(data) {
+    return request({
+        url: '/query_disable_user',
+        method: 'post',
+        data: JSON.stringify(data)
+    })
+}
+
+//查询某一个封禁玩家信息
+export function query_user(data) {
+    return request({
+        url: '/query_user',
+        method: 'post',
+        data: JSON.stringify(data)
+    })
+}
+
 //封禁或解封
 export function disable_user(data) {
     return request({

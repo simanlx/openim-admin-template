@@ -9,27 +9,26 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    token: ""
+    /* token: "" */
 
   },
   mutations: {
-    setToken(state, data) {
+    /* setToken(state, data) {
       state.token = data.token
 
-    }
+    } */
 
 
   },
   actions: {
-    getMyToken(store, data) {
-      //存token  存了两个地方
+    /* getMyToken(store, data) {
       get_token(data).then(res => {
         console.log(res, "获取token")
         store.commit("setToken", res.data)
         sessionStorage.setItem("token", res.data.token);
 
       })
-    },
+    }, */
 
   },
   //vue-admin模板自带

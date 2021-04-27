@@ -21,7 +21,6 @@ service.interceptors.request.use(
     }
 
     if (sessionStorage.getItem("token")) {
-      console.log(sessionStorage.getItem("token"), "请求里的token")
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
