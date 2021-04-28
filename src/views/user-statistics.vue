@@ -6,7 +6,9 @@
           <div slot="header" class="box-card-header">
             <span>新增用户数</span>
           </div>
-          <div class="box-card-body">9999</div></el-card
+          <div class="box-card-body">
+            {{ this.$store.state.newUsers }}
+          </div></el-card
         ></el-col
       >
       <el-col :span="8"
@@ -14,14 +16,18 @@
           <div slot="header" class="box-card-header">
             <span>活跃用户数</span>
           </div>
-          <div class="box-card-body">9999</div></el-card
+          <div class="box-card-body">
+            {{ this.$store.state.activeUser }}
+          </div></el-card
         ></el-col
       ><el-col :span="8"
         ><el-card class="box-card">
           <div slot="header" class="box-card-header">
             <span>累计用户数</span>
           </div>
-          <div class="box-card-body">9999</div></el-card
+          <div class="box-card-body">
+            {{ this.$store.state.cumulativeUsers }}
+          </div></el-card
         ></el-col
       >
     </el-row>
@@ -34,7 +40,6 @@
               :key="item.value"
               :label="item.label"
               :value="item.value"
-              @click="ddd(item.value)"
             >
             </el-option>
           </el-select>
@@ -45,6 +50,7 @@
             type="daterange"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
+            :picker-options="pickerOptions1"
           >
           </el-date-picker>
           <el-date-picker
@@ -81,7 +87,6 @@
 
 <script>
 import * as echarts from "echarts";
-import { query_new_user } from "../api/manageApi";
 import NewUserChart from "@/components/NewUserChart.vue";
 export default {
   components: {
@@ -89,6 +94,14 @@ export default {
   },
   data() {
     return {
+      newUsers: "",
+      activeUser: "",
+      cumulativeUsers: "",
+      pickerOptions1: {
+        disabledDate(time) {
+          return time.getTime() > Date.now() - 8.64e6;
+        },
+      },
       activeName: "first",
       timeType: "day",
       timeValue: "",

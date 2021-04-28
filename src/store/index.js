@@ -10,13 +10,22 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     /* token: "" */
-
+    newUsers: "",
+    activeUser: "",
+    cumulativeUsers: ""
   },
   mutations: {
     /* setToken(state, data) {
       state.token = data.token
 
     } */
+    setStatisticalData(state, data) {
+      state.newUsers = data.add
+      state.activeUser = data.active
+      state.cumulativeUsers = data.all
+
+    }
+
 
 
   },

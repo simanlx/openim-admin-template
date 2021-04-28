@@ -4,7 +4,7 @@
 
 <script>
 import * as echarts from "echarts";
-import { query_new_user } from "../api/manageApi";
+import { single_msg_count } from "../api/manageApi";
 
 export default {
   props: ["dd"],
@@ -26,18 +26,18 @@ export default {
         title: {},
         tooltip: {},
         legend: {
-          data: ["用户数"],
+          data: ["单聊消息数"],
         },
         xAxis: {
           name: "日期",
           data: [],
         },
         yAxis: {
-          name: "用户数（人）",
+          name: "消息数（条）",
         },
         series: [
           {
-            name: "用户数",
+            name: "单聊消息数",
             type: "line",
             data: this.chartData,
             itemStyle: { normal: { label: { show: true } } },
@@ -75,7 +75,7 @@ export default {
       parameter.optionID = "555";
       parameter.beginTime = Number(beginTime);
       parameter.endTime = Number(endTime);
-      query_new_user(parameter).then((res) => {
+      single_msg_count(parameter).then((res) => {
         //绑定图表数据
         this.myChart.setOption({
           xAxis: {
@@ -115,8 +115,7 @@ export default {
       parameter.optionID = "555";
       parameter.beginTime = Number(yesterday);
       parameter.endTime = Number(today);
-      query_new_user(parameter).then((res) => {
-        this.$store.commit("setStatisticalData", res.data.subData);
+      single_msg_count(parameter).then((res) => {
         //绑定图表数据
         this.myChart.setOption({
           xAxis: {

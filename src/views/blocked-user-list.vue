@@ -6,6 +6,7 @@
         v-model="userID"
         placeholder="请输入要查询的用户ID"
         style="width: 20rem"
+        @keyup.enter.native="searchUser"
       />
       <el-button type="primary" @click="searchUser"> 查询 </el-button>
     </div>
@@ -39,7 +40,6 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[3, 5, 8, 10]"
         :page-size="pageSize"
         :total="tableData.length"
       >
@@ -72,7 +72,7 @@ export default {
             item.BeginDisableTime.slice(0, 10) +
             " " +
             item.BeginDisableTime.slice(11, 19) +
-            "——" +
+            " —— " +
             item.EndDisableTime.slice(0, 10) +
             " " +
             item.EndDisableTime.slice(11, 19);
@@ -82,14 +82,36 @@ export default {
       });
     },
     searchUser() {
+      if (this.userID.length == 0) {
+        this.getList();
+        return;
+      }
       let parameter = {};
       parameter.optionID = "999";
-      parameter.userID = this.userID;
+      parameter.uid = this.userID;
       console.log(parameter, "查询请求");
       query_user(parameter).then((res) => {
-        console.log(res, "查询反馈");
+        if (res.errorCode == 0) {
+          console.log(res, "查询反馈");
+          let medium = {};
+          medium.UID = res.data.uid;
+          medium.Name = res.data.name;
+          medium.blockTime =
+            res.data.sealBeginTime.slice(0, 10) +
+            " " +
+            res.data.sealBeginTime.slice(11, 19) +
+            "——" +
+            res.data.sealEndTime.slice(0, 10) +
+            " " +
+            res.data.sealEndTime.slice(11, 19);
+          this.tableData = [];
+          this.tableData.push(medium);
+        } else {
+          this.$message(res.errorMsg);
+        }
       });
     },
+    //分页
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       this.pageSize = val;

@@ -6,6 +6,7 @@
         v-model="Token"
         placeholder="请输入要验证的用户Token"
         style="width: 20rem"
+        @keyup.enter.native="handleFilter"
       />
       <el-button type="primary" @click="handleFilter"> 验证 </el-button>
     </div>
@@ -15,13 +16,16 @@
         v-model="userID"
         placeholder="请输入要查询的用户ID"
         style="width: 20rem"
+        @keyup.enter.native="handleFilter"
       />
       <el-button type="primary" @click="handleFilter"> 查询 </el-button>
     </div>
     <span class="tableTitle">用户管理/用户列表</span>
     <div class="tableArea">
       <el-table
-        :data="tableData"
+        :data="
+          tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+        "
         border
         fit
         highlight-current-row
@@ -60,6 +64,14 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :total="tableData.length"
+      >
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -71,6 +83,8 @@ export default {
     return {
       Token: "",
       userID: "",
+      currentPage: 1,
+      pageSize: 3,
       tableData: [
         {
           nickName: "张三",
@@ -100,16 +114,26 @@ export default {
     handleClick() {
       console.log("修改");
     },
+    //分页
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.pageSize = val;
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.currentPage = val;
+    },
     ban(e) {
       console.log(e);
-      /* let parameter = {};
+      let parameter = {};
       parameter.optionID = "999";
       parameter.uid = e.UID;
-      parameter.disable_second = 0;
+      parameter.disable_second = 30 * 86400; //封禁时间三十天
       parameter.ex = "";
-      disable_user(parameter).then(res=>{
-      console.log(res)
-    }) */
+      console.log(parameter);
+      disable_user(parameter).then((res) => {
+        console.log(res);
+      });
     },
   },
 };

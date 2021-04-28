@@ -76,7 +76,9 @@ export const constantRoutes = [
 
       }
     ]
-  }, {
+  },
+
+  {
     path: '/operation-management',
     component: Layout,
     redirect: '/operation-management/user-management',
@@ -103,6 +105,24 @@ export const constantRoutes = [
     ]
   },
 
+  {
+    path: '/group-management',
+    component: Layout,
+    name: 'group-management',
+    redirect: '/group-management',
+    meta: { title: '群组管理', icon: 'el-icon-office-building' },
+    children: [
+      {
+        path: 'group-management',
+        name: 'group-management',
+        component: () => import('@/views/group-management'),
+        meta: { title: '群组管理', icon: 'el-icon-office-building' },
+
+
+      }
+    ]
+
+  },
 
   {
     path: '/message-management',
