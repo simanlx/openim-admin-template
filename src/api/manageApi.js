@@ -35,7 +35,7 @@ export function query_disable_user(data) {
     })
 }
 
-//查询某一个封禁玩家信息
+//查询用户列表或某一个封禁玩家信息
 export function query_user(data) {
     return request({
         url: '/query_user',
@@ -61,3 +61,4 @@ export function query_msg_list(data) {
         data: JSON.stringify(data)
     })
 }
+

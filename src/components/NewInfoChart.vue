@@ -116,6 +116,8 @@ export default {
       parameter.beginTime = Number(yesterday);
       parameter.endTime = Number(today);
       single_msg_count(parameter).then((res) => {
+        this.$store.commit("setInfoStatisticalData", res.data.subData);
+        console.log(res);
         //绑定图表数据
         this.myChart.setOption({
           xAxis: {

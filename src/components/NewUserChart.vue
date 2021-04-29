@@ -116,7 +116,8 @@ export default {
       parameter.beginTime = Number(yesterday);
       parameter.endTime = Number(today);
       query_new_user(parameter).then((res) => {
-        this.$store.commit("setStatisticalData", res.data.subData);
+        console.log(res);
+        this.$store.commit("setUserStatisticalData", res.data.subData);
         //绑定图表数据
         this.myChart.setOption({
           xAxis: {

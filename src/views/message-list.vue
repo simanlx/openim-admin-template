@@ -4,19 +4,19 @@
       <el-input
         v-model="listQuery.content"
         placeholder="请输入搜索内容"
-        style="width: 13.2%"
+        style="width: 13.2%; min-width: 134px"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       /><el-input
         v-model="listQuery.sendID"
         placeholder="请输入发送者ID"
-        style="width: 8%"
+        style="width: 134px"
         class="filter-item sendID-input"
         @keyup.enter.native="handleFilter"
       /><el-input
         v-model="listQuery.receiveID"
         placeholder="请输入接收者ID"
-        style="width: 8%"
+        style="width: 134px"
         class="filter-item receiveID-input"
         @keyup.enter.native="handleFilter"
       />
@@ -46,7 +46,10 @@
         style="width: 6%; min-width: 90px"
         clearable
       >
-        <el-option label="文本" value="1" /><el-option label="图片" value="2" />
+        <el-option label="文本" value="101" /><el-option
+          label="图片"
+          value="102"
+        />
       </el-select>
       <el-button
         class="filter-item"
@@ -116,73 +119,132 @@ export default {
         messageType: "",
       },
       currentPage: 1,
-      pageSize: 3,
-      tableData: [
-        {
-          sessionType: "单聊",
-          messageType: "文本",
-          sendID: "77777",
-          receiveID: "77777",
-          sendNickname: "张三",
-          receiveNickname: "李四",
-          content: "床前明月光，疑是地上霜，哒哒哒哒哒",
-          time: "2016-05-04",
-        },
-        {
-          sessionType: "单聊",
-          messageType: "文本",
-          sendID: "77777",
-          receiveID: "77777",
-          sendNickname: "张三",
-          receiveNickname: "李四",
-          content: "床前明月光，疑是地上霜，哒哒哒哒哒",
-          time: "2016-05-04",
-        },
-        {
-          sessionType: "单聊",
-          messageType: "文本",
-          sendID: "77777",
-          receiveID: "77777",
-          sendNickname: "张三",
-          receiveNickname: "李四",
-          content: "床前明月光，疑是地上霜，哒哒哒哒哒",
-          time: "2016-05-04",
-        },
-      ],
+      pageSize: 10,
+      tableData: [],
     };
   },
   methods: {
+    //初始化查询
+    getList() {
+      let parameter = {};
+      parameter.optionID = "777";
+      query_msg_list(parameter).then((res) => {
+        console.log(res);
+        res.data.msg.forEach((item) => {
+          let medium = {};
+          if (item.SessionType == 1) {
+            medium.sessionType = "单聊";
+          } else if (item.SessionType == 2) {
+            medium.sessionType = "群聊";
+          }
+          if (item.MsgType == 101) {
+            medium.messageType = "文本";
+          } else if (item.MsgType == 102) {
+            medium.messageType = "图片";
+          }
+
+          medium.sendID = item.SendID;
+          medium.sendNickname = item.SendName;
+          medium.receiveID = item.RecvID;
+          medium.receiveNickname = item.RecvName;
+          medium.queryContent = item.QueryContent;
+          medium.content = item.Content;
+          let time = new Date(item.Time * 1000);
+          let Y = time.getFullYear() + "-";
+          let M =
+            (time.getMonth() + 1 < 10
+              ? "0" + (time.getMonth() + 1)
+              : time.getMonth() + 1) + "-";
+          let D =
+            (time.getDate() < 10 ? "0" + time.getDate() : time.getDate()) + " ";
+          var h =
+            (time.getHours() < 10 ? "0" + time.getHours() : time.getHours()) +
+            ":";
+          var m =
+            (time.getMinutes() < 10
+              ? "0" + time.getMinutes()
+              : time.getMinutes()) + ":";
+          var s =
+            time.getSeconds() < 10
+              ? "0" + time.getSeconds()
+              : time.getSeconds();
+
+          let strDate = Y + M + D + h + m + s;
+          medium.time = strDate;
+          this.tableData.push(medium);
+        });
+      });
+    },
     handleFilter() {
+      let parameter = {};
       if (this.listQuery.timeValue.length > 0) {
         var beginTime = this.listQuery.timeValue[0].getTime() / 1000;
         var endTime = this.listQuery.timeValue[1].getTime() / 1000;
-      } else {
-        var beginTime = "";
-        var endTime = "";
+        parameter.beginTime = beginTime;
+        parameter.endTime = endTime;
       }
-      let parameter = {};
-      parameter.optionID = "777";
-      parameter.beginTime = beginTime;
-      parameter.endTime = endTime;
-      parameter.sessionType = Number(this.listQuery.sessionType);
-      parameter.msgType = Number(this.listQuery.messageType);
-      parameter.queryContent = this.listQuery.content;
+      if (this.listQuery.content.length > 0) {
+        parameter.queryContent = this.listQuery.content;
+      }
+      if (this.listQuery.sessionType.length > 0) {
+        parameter.sessionType = Number(this.listQuery.sessionType);
+      }
+      if (this.listQuery.messageType.length > 0) {
+        parameter.msgType = Number(this.listQuery.messageType);
+      }
+
+      parameter.optionID = "7777";
+      console.log(parameter, "参数");
+
       query_msg_list(parameter).then((res) => {
-        console.log(parameter, "参数参数参数");
-        console.log(res, "返回结果");
-        res.data.msg.forEach((item) => {
-          let medium = {};
-          medium.sessionType = item.sessionType;
-          medium.messageType = item.msgType;
-          medium.sendID = item.sendID;
-          medium.sendNickname = item.sendName;
-          medium.receiveID = item.recvID;
-          medium.receiveNickname = item.recvName;
-          medium.queryContent = item.queryContent;
-          medium.content = item.content;
-          medium.time = item.time;
-          this.tableData.push(medium);
-        });
+        console.log(res);
+        if (res.data.msg != null) {
+          this.tableData = [];
+          res.data.msg.forEach((item) => {
+            let medium = {};
+            if (item.SessionType == 1) {
+              medium.sessionType = "单聊";
+            } else if (item.SessionType == 2) {
+              medium.sessionType = "群聊";
+            }
+            if (item.MsgType == 101) {
+              medium.messageType = "文本";
+            } else if (item.MsgType == 102) {
+              medium.messageType = "图片";
+            }
+            medium.sendID = item.SendID;
+            medium.sendNickname = item.SendName;
+            medium.receiveID = item.RecvID;
+            medium.receiveNickname = item.RecvName;
+            medium.queryContent = item.QueryContent;
+            medium.content = item.Content;
+            let time = new Date(item.Time * 1000);
+            let Y = time.getFullYear() + "-";
+            let M =
+              (time.getMonth() + 1 < 10
+                ? "0" + (time.getMonth() + 1)
+                : time.getMonth() + 1) + "-";
+            let D =
+              (time.getDate() < 10 ? "0" + time.getDate() : time.getDate()) +
+              " ";
+            var h =
+              (time.getHours() < 10 ? "0" + time.getHours() : time.getHours()) +
+              ":";
+            var m =
+              (time.getMinutes() < 10
+                ? "0" + time.getMinutes()
+                : time.getMinutes()) + ":";
+            var s =
+              time.getSeconds() < 10
+                ? "0" + time.getSeconds()
+                : time.getSeconds();
+
+            let strDate = Y + M + D + h + m + s;
+            medium.time = strDate;
+
+            this.tableData.push(medium);
+          });
+        }
       });
     },
     //分页
@@ -194,6 +256,9 @@ export default {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
+  },
+  created() {
+    this.getList();
   },
 };
 </script>

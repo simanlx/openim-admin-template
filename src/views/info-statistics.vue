@@ -6,7 +6,9 @@
           <div slot="header" class="box-card-header">
             <span>单聊消息数</span>
           </div>
-          <div class="box-card-body">99999</div></el-card
+          <div class="box-card-body">
+            {{ this.$store.state.singleChat }}
+          </div></el-card
         ></el-col
       >
       <el-col :span="6"

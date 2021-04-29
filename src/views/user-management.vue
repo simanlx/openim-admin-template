@@ -18,7 +18,7 @@
         style="width: 20rem"
         @keyup.enter.native="handleFilter"
       />
-      <el-button type="primary" @click="handleFilter"> 查询 </el-button>
+      <el-button type="primary" @click="searchUser"> 查询 </el-button>
     </div>
     <span class="tableTitle">用户管理/用户列表</span>
     <div class="tableArea">
@@ -53,13 +53,24 @@
         </el-table-column>
         <el-table-column property="createTime" label="创建时间">
         </el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column property="status" label="操作" width="100">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <!-- <el-button @click="handleClick(scope.row)" type="text" size="small"
               >修改</el-button
-            >
-            <el-button type="text" size="small" @click="ban(scope.row)"
+            > -->
+            <el-button
+              type="text"
+              size="small"
+              @click="confirm(scope.row)"
+              v-if="scope.row.status == 0"
               >封禁</el-button
+            >
+            <el-button
+              type="text"
+              size="small"
+              @click="confirm(scope.row)"
+              v-else
+              >解封</el-button
             >
           </template>
         </el-table-column>
@@ -77,34 +88,15 @@
 </template>
 
 <script>
-import { disable_user } from "@/api/manageApi.js";
+import { disable_user, query_user } from "@/api/manageApi.js";
 export default {
   data() {
     return {
       Token: "",
       userID: "",
       currentPage: 1,
-      pageSize: 3,
-      tableData: [
-        {
-          nickName: "张三",
-          userID: "7777777777",
-          userProfile: require("@/assets/kk.jpg"),
-          createTime: "2020-03-25 09:44",
-        },
-        {
-          nickName: "张三",
-          userID: "7777777777",
-          userProfile: require("@/assets/kk.jpg"),
-          createTime: "2020-03-25 09:44",
-        },
-        {
-          nickName: "张三",
-          userID: "7777777777",
-          userProfile: require("@/assets/kk.jpg"),
-          createTime: "2020-03-25 09:44",
-        },
-      ],
+      pageSize: 10,
+      tableData: [],
     };
   },
   methods: {
@@ -113,6 +105,28 @@ export default {
     },
     handleClick() {
       console.log("修改");
+    },
+    confirm(e) {
+      console.log(e);
+      if (e.status == 0) {
+        this.$confirm("确定要封禁该用户吗？", "操作确认", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+        })
+          .then(() => {
+            this.ban(e);
+          })
+          .catch(() => {});
+      } else if (e.status == 1) {
+        this.$confirm("确定要解封该用户吗？", "操作确认", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+        })
+          .then(() => {
+            this.ban(e);
+          })
+          .catch(() => {});
+      }
     },
     //分页
     handleSizeChange(val) {
@@ -123,18 +137,78 @@ export default {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
-    ban(e) {
-      console.log(e);
+    searchUser() {
       let parameter = {};
-      parameter.optionID = "999";
-      parameter.uid = e.UID;
-      parameter.disable_second = 30 * 86400; //封禁时间三十天
-      parameter.ex = "";
+      parameter.optionID = "888";
+      parameter.uid = this.userID;
       console.log(parameter);
-      disable_user(parameter).then((res) => {
-        console.log(res);
+
+      query_user(parameter).then((res) => {
+        console.log(res, "5555555555555555");
+        if (res.data.user != null) {
+          this.tableData = [];
+          res.data.user.forEach((item) => {
+            let medium = {};
+            medium.userID = item.UID;
+            medium.nickName = item.Name;
+            medium.userProfile = require("@/assets/kk.jpg");
+            medium.createTime =
+              item.CreatedTime.slice(0, 10) +
+              " " +
+              item.CreatedTime.slice(11, 19);
+            medium.status = item.Seal;
+
+            this.tableData.push(medium);
+          });
+        } else {
+          this.$message("该用户不存在");
+        }
       });
     },
+    ban(e) {
+      console.log(e, "操作项");
+      let parameter = {};
+      parameter.optionID = "999";
+      parameter.uid = e.userID;
+      if (e.status == 0) {
+        parameter.disable_second = 30 * 86400; //封禁时间三十天
+      } else if (e.status == 1) {
+        parameter.disable_second = -3000 * 86400;
+      }
+
+      parameter.ex = "";
+      disable_user(parameter).then((res) => {
+        if (res.errorCode == 0) {
+          this.getList();
+        }
+      });
+    },
+    getList() {
+      this.tableData = [];
+      let parameter = {};
+      parameter.optionID = "888";
+      parameter.uid = "";
+      console.log(parameter);
+      query_user(parameter).then((res) => {
+        console.log(res);
+        res.data.user.forEach((item) => {
+          let medium = {};
+          medium.userID = item.UID;
+          medium.nickName = item.Name;
+          medium.userProfile = require("@/assets/kk.jpg");
+          medium.createTime =
+            item.CreatedTime.slice(0, 10) +
+            " " +
+            item.CreatedTime.slice(11, 19);
+          medium.status = item.Seal;
+
+          this.tableData.push(medium);
+        });
+      });
+    },
+  },
+  created() {
+    this.getList();
   },
 };
 </script>

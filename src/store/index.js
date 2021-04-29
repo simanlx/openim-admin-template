@@ -12,18 +12,24 @@ const store = new Vuex.Store({
     /* token: "" */
     newUsers: "",
     activeUser: "",
-    cumulativeUsers: ""
+    cumulativeUsers: "",
+    singleChat: ""
   },
   mutations: {
     /* setToken(state, data) {
       state.token = data.token
 
     } */
-    setStatisticalData(state, data) {
+    //用户数据统计
+    setUserStatisticalData(state, data) {
       state.newUsers = data.add
       state.activeUser = data.active
       state.cumulativeUsers = data.all
 
+    },
+    //消息数据统计
+    setInfoStatisticalData(state, data) {
+      state.singleChat = data.singleAll
     }
 
 

@@ -198,8 +198,8 @@ export default {
     //初始化查询
   },
   mounted() {
-    this.initEchart2();
-    this.initEchart3();
+    // this.initEchart2();
+    // this.initEchart3();
   },
 };
 </script>

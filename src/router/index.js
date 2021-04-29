@@ -113,8 +113,8 @@ export const constantRoutes = [
     meta: { title: '群组管理', icon: 'el-icon-office-building' },
     children: [
       {
-        path: 'group-management',
-        name: 'group-management',
+        path: 'group-managementSelf',
+        name: 'group-managementSelf',
         component: () => import('@/views/group-management'),
         meta: { title: '群组管理', icon: 'el-icon-office-building' },
 
@@ -138,12 +138,12 @@ export const constantRoutes = [
         component: () => import('@/views/message-list'),
         meta: { title: '消息列表', icon: 'table' }
       },
-      {
-        path: 'user-message',
-        name: 'user-message',
-        component: () => import('@/views/user-message'),
-        meta: { title: '用户消息', icon: 'el-icon-s-custom' }
-      }
+      /*  {
+         path: 'user-message',
+         name: 'user-message',
+         component: () => import('@/views/user-message'),
+         meta: { title: '用户消息', icon: 'el-icon-s-custom' }
+       } */
     ]
   },
 

@@ -30,7 +30,7 @@
         </el-table-column>
         <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <el-button @click="confirm(scope.row)" type="text" size="small"
               >解封</el-button
             >
           </template>
@@ -61,6 +61,7 @@ export default {
   },
   methods: {
     getList() {
+      this.tableData = [];
       let parameter = {};
       parameter.optionID = "9999";
       query_disable_user(parameter).then((res) => {
@@ -91,23 +92,28 @@ export default {
       parameter.uid = this.userID;
       console.log(parameter, "查询请求");
       query_user(parameter).then((res) => {
-        if (res.errorCode == 0) {
-          console.log(res, "查询反馈");
-          let medium = {};
-          medium.UID = res.data.uid;
-          medium.Name = res.data.name;
-          medium.blockTime =
-            res.data.sealBeginTime.slice(0, 10) +
-            " " +
-            res.data.sealBeginTime.slice(11, 19) +
-            "——" +
-            res.data.sealEndTime.slice(0, 10) +
-            " " +
-            res.data.sealEndTime.slice(11, 19);
+        console.log(res);
+        if (res.data.user != null) {
           this.tableData = [];
-          this.tableData.push(medium);
+          res.data.user.forEach((item) => {
+            if (item.Seal == 1) {
+              let medium = {};
+              medium.UID = item.UID;
+              medium.Name = item.Name;
+              medium.blockTime =
+                item.BeginDisableTime.slice(0, 10) +
+                " " +
+                item.BeginDisableTime.slice(11, 19) +
+                "——" +
+                item.EndDisableTime.slice(0, 10) +
+                " " +
+                item.EndDisableTime.slice(11, 19);
+
+              this.tableData.push(medium);
+            }
+          });
         } else {
-          this.$message(res.errorMsg);
+          this.$message("该用户不存在");
         }
       });
     },
@@ -120,17 +126,26 @@ export default {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
-    handleClick(e) {
-      console.log(e);
-      let parameter = {};
-      parameter.optionID = "999";
-      parameter.uid = e.UID;
-      parameter.disable_second = 0;
-      parameter.ex = "";
-      console.log(parameter);
-      disable_user(parameter).then((res) => {
-        console.log(res);
-      });
+    confirm(e) {
+      this.$confirm("确定要解封该用户吗？", "操作确认", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+      })
+        .then(() => {
+          console.log(e);
+          let parameter = {};
+          parameter.optionID = "999";
+          parameter.uid = e.UID;
+          parameter.disable_second = 0;
+          parameter.ex = "";
+          console.log(parameter);
+          disable_user(parameter).then((res) => {
+            console.log(res);
+
+            this.getList();
+          });
+        })
+        .catch(() => {});
     },
   },
   created() {
