@@ -47,7 +47,7 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/data-statistics/user-statistics',
-
+    meta: { requireAuth: true }
 
   },
 
@@ -56,14 +56,14 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/data-statistics/user-statistics',
     name: 'data-statistics',
-    meta: { title: '数据统计', icon: 'el-icon-s-data' },
+    meta: { title: '数据统计', icon: 'el-icon-s-data', requireAuth: true },
 
     children: [
       {
         path: 'user-statistics',
         name: 'user-statistics',
         component: () => import('@/views/user-statistics'),
-        meta: { title: '用户统计', icon: 'el-icon-user-solid' },
+        meta: { title: '用户统计', icon: 'el-icon-user-solid', requireAuth: true },
 
 
       },
@@ -71,7 +71,7 @@ export const constantRoutes = [
         path: 'info-statistics',
         name: 'info-statistics',
         component: () => import('@/views/info-statistics'),
-        meta: { title: '消息统计', icon: 'el-icon-s-comment' },
+        meta: { title: '消息统计', icon: 'el-icon-s-comment', requireAuth: true },
 
 
       }
@@ -83,14 +83,14 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/operation-management/user-management',
     name: 'operation-management',
-    meta: { title: '运营管理', icon: 'el-icon-s-help' },
+    meta: { title: '运营管理', icon: 'el-icon-s-help', requireAuth: true },
 
     children: [
       {
         path: 'user-management',
         name: 'user-management',
         component: () => import('@/views/user-management'),
-        meta: { title: '用户管理', icon: 'el-icon-user-solid' },
+        meta: { title: '用户管理', icon: 'el-icon-user-solid', requireAuth: true },
 
 
       },
@@ -98,7 +98,7 @@ export const constantRoutes = [
         path: 'blocked-user-list',
         name: 'blocked-user-list',
         component: () => import('@/views/blocked-user-list'),
-        meta: { title: '封禁用户列表', icon: 'el-icon-s-comment' },
+        meta: { title: '封禁用户列表', icon: 'el-icon-s-comment', requireAuth: true },
 
 
       }
@@ -110,13 +110,13 @@ export const constantRoutes = [
     component: Layout,
     name: 'group-management',
     redirect: '/group-management',
-    meta: { title: '群组管理', icon: 'el-icon-office-building' },
+    meta: { title: '群组管理', icon: 'el-icon-office-building', requireAuth: true },
     children: [
       {
         path: 'group-managementSelf',
         name: 'group-managementSelf',
         component: () => import('@/views/group-management'),
-        meta: { title: '群组管理', icon: 'el-icon-office-building' },
+        meta: { title: '群组管理', icon: 'el-icon-office-building', requireAuth: true },
 
 
       }
@@ -129,14 +129,14 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/message-management/message-list',
     name: 'message-management',
-    meta: { title: '消息管理', icon: 'el-icon-s-comment' },
+    meta: { title: '消息管理', icon: 'el-icon-s-comment', requireAuth: true },
 
     children: [
       {
         path: 'message-list',
         name: 'message-list',
         component: () => import('@/views/message-list'),
-        meta: { title: '消息列表', icon: 'table' }
+        meta: { title: '消息列表', icon: 'table', requireAuth: true }
       },
       /*  {
          path: 'user-message',
