@@ -137,9 +137,9 @@ export default {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
-    searchUser() {
+    async searchUser() {
       let parameter = {};
-      parameter.optionID = "888";
+      parameter.operationID = await Date.now();
       parameter.uid = this.userID;
       console.log(parameter);
 
@@ -165,10 +165,10 @@ export default {
         }
       });
     },
-    ban(e) {
+    async ban(e) {
       console.log(e, "操作项");
       let parameter = {};
-      parameter.optionID = "999";
+      parameter.operationID = await Date.now();
       parameter.uid = e.userID;
       if (e.status == 0) {
         parameter.disable_second = 30 * 86400; //封禁时间三十天
@@ -183,10 +183,10 @@ export default {
         }
       });
     },
-    getList() {
+    async getList() {
       this.tableData = [];
       let parameter = {};
-      parameter.optionID = "888";
+      parameter.operationID = await Date.now();
       parameter.uid = "";
       console.log(parameter);
       query_user(parameter).then((res) => {

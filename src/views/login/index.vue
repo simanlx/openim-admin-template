@@ -54,8 +54,7 @@ export default {
 
     return {
       loginForm: {
-        secret: "123456",
-        optionID: "111",
+        secret: "token111",
       },
       loginRules: {
         secret: [
@@ -77,6 +76,10 @@ export default {
     },
     async handleLogin() {
       this.loading = true;
+      let transfer = await Date.now().toString();
+      this.loginForm.operationID = transfer.slice(6, 13);
+      console.log(this.loginForm);
+      /* console.log(transfer); */
       await get_token(this.loginForm).then((res) => {
         sessionStorage.setItem("token", res.data.token);
       });

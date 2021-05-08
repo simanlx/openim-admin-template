@@ -125,9 +125,9 @@ export default {
   },
   methods: {
     //初始化查询
-    getList() {
+    async getList() {
       let parameter = {};
-      parameter.optionID = "777";
+      parameter.operationID = await Date.now();
       query_msg_list(parameter).then((res) => {
         console.log(res);
         res.data.msg.forEach((item) => {
@@ -175,7 +175,7 @@ export default {
         });
       });
     },
-    handleFilter() {
+    async handleFilter() {
       let parameter = {};
       if (this.listQuery.timeValue.length > 0) {
         var beginTime = this.listQuery.timeValue[0].getTime() / 1000;
@@ -193,7 +193,7 @@ export default {
         parameter.msgType = Number(this.listQuery.messageType);
       }
 
-      parameter.optionID = "7777";
+      parameter.operationID = await Date.now();
       console.log(parameter, "参数");
 
       query_msg_list(parameter).then((res) => {

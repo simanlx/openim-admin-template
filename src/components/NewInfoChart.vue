@@ -47,7 +47,7 @@ export default {
       // 使用刚指定的配置项和数据显示图表。
       this.myChart.setOption(this.option);
     },
-    searchData() {
+    async searchData() {
       this.timeValue = this.dd;
       let beginTime = this.timeValue[0].getTime() / 1000;
       let endTime = this.timeValue[1].getTime() / 1000;
@@ -72,7 +72,7 @@ export default {
       }
 
       let parameter = {};
-      parameter.optionID = "555";
+      parameter.operationID = await Date.now();
       parameter.beginTime = Number(beginTime);
       parameter.endTime = Number(endTime);
       single_msg_count(parameter).then((res) => {
@@ -90,7 +90,7 @@ export default {
       });
     },
     //初始化查询
-    initData(date) {
+    async initData(date) {
       this.initEchart1();
       //初始化默认设置的前七天的数据
       let today = new Date(date);
@@ -112,7 +112,7 @@ export default {
       }
 
       let parameter = {};
-      parameter.optionID = "555";
+      parameter.operationID = await Date.now();
       parameter.beginTime = Number(yesterday);
       parameter.endTime = Number(today);
       single_msg_count(parameter).then((res) => {

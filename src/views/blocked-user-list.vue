@@ -60,10 +60,10 @@ export default {
     };
   },
   methods: {
-    getList() {
+    async getList() {
       this.tableData = [];
       let parameter = {};
-      parameter.optionID = "9999";
+      parameter.operationID = await Date.now();
       query_disable_user(parameter).then((res) => {
         res.data.users.forEach((item) => {
           let medium = {};
@@ -82,13 +82,13 @@ export default {
         });
       });
     },
-    searchUser() {
+    async searchUser() {
       if (this.userID.length == 0) {
         this.getList();
         return;
       }
       let parameter = {};
-      parameter.optionID = "999";
+      parameter.operationID = await Date.now();
       parameter.uid = this.userID;
       console.log(parameter, "查询请求");
       query_user(parameter).then((res) => {
@@ -131,10 +131,10 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
       })
-        .then(() => {
+        .then(async () => {
           console.log(e);
           let parameter = {};
-          parameter.optionID = "999";
+          parameter.operationID = await Date.now();
           parameter.uid = e.UID;
           parameter.disable_second = 0;
           parameter.ex = "";
