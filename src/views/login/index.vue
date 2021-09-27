@@ -76,8 +76,7 @@ export default {
     },
     async handleLogin() {
       this.loading = true;
-      let transfer = await Date.now().toString();
-      this.loginForm.operationID = transfer.slice(6, 13);
+      this.loginForm.operationID = await Date.now().toString();
       console.log(this.loginForm);
       /* console.log(transfer); */
       await get_token(this.loginForm).then((res) => {

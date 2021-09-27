@@ -63,7 +63,7 @@ export default {
     async getList() {
       this.tableData = [];
       let parameter = {};
-      parameter.operationID = await Date.now();
+      parameter.operationID = await Date.now().toString();
       query_disable_user(parameter).then((res) => {
         res.data.users.forEach((item) => {
           let medium = {};
@@ -88,7 +88,7 @@ export default {
         return;
       }
       let parameter = {};
-      parameter.operationID = await Date.now();
+      parameter.operationID = await Date.now().toString();
       parameter.uid = this.userID;
       console.log(parameter, "查询请求");
       query_user(parameter).then((res) => {
@@ -134,7 +134,7 @@ export default {
         .then(async () => {
           console.log(e);
           let parameter = {};
-          parameter.operationID = await Date.now();
+          parameter.operationID = await Date.now().toString();
           parameter.uid = e.UID;
           parameter.disable_second = 0;
           parameter.ex = "";

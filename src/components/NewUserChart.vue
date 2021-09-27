@@ -72,7 +72,7 @@ export default {
       }
 
       let parameter = {};
-      parameter.operationID = await Date.now();
+      parameter.operationID = await Date.now().toString();
       parameter.beginTime = Number(beginTime);
       parameter.endTime = Number(endTime);
       query_new_user(parameter).then((res) => {

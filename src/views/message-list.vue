@@ -127,7 +127,7 @@ export default {
     //初始化查询
     async getList() {
       let parameter = {};
-      parameter.operationID = await Date.now();
+      parameter.operationID = await Date.now().toString();
       query_msg_list(parameter).then((res) => {
         console.log(res);
         res.data.msg.forEach((item) => {
@@ -193,7 +193,7 @@ export default {
         parameter.msgType = Number(this.listQuery.messageType);
       }
 
-      parameter.operationID = await Date.now();
+      parameter.operationID = await Date.now().toString();
       console.log(parameter, "参数");
 
       query_msg_list(parameter).then((res) => {

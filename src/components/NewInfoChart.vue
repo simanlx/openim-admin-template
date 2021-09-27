@@ -72,7 +72,7 @@ export default {
       }
 
       let parameter = {};
-      parameter.operationID = await Date.now();
+      parameter.operationID = await Date.now().toString();
       parameter.beginTime = Number(beginTime);
       parameter.endTime = Number(endTime);
       single_msg_count(parameter).then((res) => {
@@ -112,7 +112,7 @@ export default {
       }
 
       let parameter = {};
-      parameter.operationID = await Date.now();
+      parameter.operationID = await Date.now().toString();
       parameter.beginTime = Number(yesterday);
       parameter.endTime = Number(today);
       single_msg_count(parameter).then((res) => {

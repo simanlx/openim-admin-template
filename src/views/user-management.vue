@@ -139,7 +139,7 @@ export default {
     },
     async searchUser() {
       let parameter = {};
-      parameter.operationID = await Date.now();
+      parameter.operationID = await Date.now().toString();
       parameter.uid = this.userID;
       console.log(parameter);
 
@@ -168,7 +168,7 @@ export default {
     async ban(e) {
       console.log(e, "操作项");
       let parameter = {};
-      parameter.operationID = await Date.now();
+      parameter.operationID = await Date.now().toString();
       parameter.uid = e.userID;
       if (e.status == 0) {
         parameter.disable_second = 30 * 86400; //封禁时间三十天
@@ -186,7 +186,7 @@ export default {
     async getList() {
       this.tableData = [];
       let parameter = {};
-      parameter.operationID = await Date.now();
+      parameter.operationID = await Date.now().toString();
       parameter.uid = "";
       console.log(parameter);
       query_user(parameter).then((res) => {
