@@ -58,5 +58,5 @@ Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/gui
 
 ## Demo
 
-![demo]([https://github.com/PanJiaChen/PanJiaChen.github.io/blob/master/images/demo.gif](https://github.com/simanlx/openim-admin-template/blob/master/%E6%88%AA%E5%B1%8F2023-07-14%2002.57.04.png))
+![demo](https://github.com/simanlx/openim-admin-template/blob/master/%E6%88%AA%E5%B1%8F2023-07-14%2002.57.04.png)
 
